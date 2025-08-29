@@ -1,0 +1,27 @@
+# Configuración de Base de Datos en la Nube (Neon)
+# =================================================
+# 
+# Copie este archivo como 'config_nube.ini' y configure
+# los parámetros de su base de datos PostgreSQL en Neon.
+
+[database_nube]
+host = su-proyecto.neon.tech
+port = 5432
+database = crm_legal_db
+username = su_usuario_neon
+password = su_password_neon
+
+# Configuración alternativa si usa otra sección
+[db_settings]
+host = su-proyecto.neon.tech
+port = 5432
+database = crm_legal_db
+username = su_usuario_neon
+password = su_password_neon
+
+# Ejemplo de configuración real de Neon:
+# host = ep-cool-math-123456.us-east-1.aws.neon.tech
+# port = 5432
+# database = neondb
+# username = neondb_owner
+# password = npg_AbCdEfGhIjKlMnOpQrStUvWxYz123456

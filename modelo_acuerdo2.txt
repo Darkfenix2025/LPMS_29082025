@@ -1,0 +1,51 @@
+ACUERDO DE MEDIACIÓN
+
+En la Ciudad Autónoma de Buenos Aires, a los {DIA_ACUERDO} días del mes de {MES_ACUERDO} de {AÑO_ACUERDO}, comparecen en el Centro de Mediación {CENTRO_MEDIACION}, sito en {LUGAR_ACUERDO}, ante el/a Mediador/a {MEDIADOR}, designado por el Superior Tribunal de Justicia de la Provincia de Buenos Aires, las siguientes partes:
+
+ACTORES:
+{ACTORES_LIST}
+
+DEMANDADOS:
+{DEMANDADOS_LIST}
+
+Las partes manifiestan que han arribado a un acuerdo total y definitivo respecto del conflicto que las enfrenta, el cual se individualiza en autos caratulados: "{CARATULA}", Expte. N° {NUMERO_EXPEDIENTE}, del Juzgado {JUZGADO}.
+
+PRIMERO: Las partes reconocen que han sido debidamente informadas sobre la naturaleza, alcance y consecuencias del presente acuerdo, así como sobre las alternativas disponibles para la resolución del conflicto.
+
+SEGUNDO: Las partes acuerdan lo siguiente:
+
+2.1 MONTO DEL ACUERDO: Las partes convienen en que el actor percibirá la suma de ${MONTO_COMPENSACION_NUMEROS} ({MONTO_COMPENSACION_LETRAS} PESOS), en concepto de compensación por los daños y perjuicios sufridos.
+
+2.2 FORMA DE PAGO: El pago se efectuará de la siguiente manera:
+- Banco: {BANCO_ACTOR}
+- CBU: {CBU_ACTOR}
+- Alias: {ALIAS_ACTOR}
+- CUIT: {CUIT_ACTOR}
+- Plazo: {PLAZO_PAGO_DIAS} ({PLAZO_PAGO_LETRAS}) días hábiles a partir de la homologación del presente acuerdo.
+
+2.3 COSTAS Y HONORARIOS: Las partes acuerdan que cada una abonará sus propios costos y honorarios profesionales.
+
+TERCERO: Las partes se obligan a no iniciar ni continuar acción judicial alguna entre sí por los mismos hechos que originaron el presente conflicto, renunciando expresamente a cualquier acción, excepción o recurso que pudieren corresponderles.
+
+CUARTO: Las partes solicitan al Mediador interviente eleve el presente acuerdo a homologación judicial, conforme lo dispuesto por el artículo 1° de la Ley 13.951 y concordantes.
+
+QUINTO: Las partes reconocen que el presente acuerdo ha sido celebrado de común acuerdo, sin vicios del consentimiento, y que han sido asistidas en su celebración por sus respectivos letrados patrocinante.
+
+SEXTO: Las partes acuerdan que cualquier controversia que pudiera surgir con motivo de la interpretación o ejecución del presente acuerdo será sometida al conocimiento de los jueces ordinarios competentes.
+
+En prueba de conformidad, las partes firman el presente acuerdo en tres (3) ejemplares de un mismo tenor y a un solo efecto, en la fecha y lugar arriba indicados.
+
+{FIRMAS_ACTORES}
+
+{FIRMAS_DEMANDADOS}
+
+Con lo que se dio por terminado el acto, firmando el Mediador actuante.
+
+EL MEDIADOR
+{FIRMA_MEDIADOR}
+
+HOMOLOGADO:
+EL JUEZ
+{FIRMA_JUEZ}
+
+Fecha de homologación: _______________

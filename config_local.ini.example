@@ -1,0 +1,20 @@
+# Configuración de Base de Datos Local
+# ====================================
+# 
+# Copie este archivo como 'config_local.ini' y configure
+# los parámetros de su base de datos PostgreSQL local.
+
+[database_local]
+host = localhost
+port = 5432
+database = crm_legal_db
+username = postgres
+password = su_password_local
+
+# Configuración alternativa si usa otra sección
+[db_settings]
+host = localhost
+port = 5432
+database = crm_legal_db
+username = postgres
+password = su_password_local
