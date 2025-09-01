@@ -1,5 +1,11 @@
+"""
+Agent Core - Núcleo del Agente Inteligente para LPMS
+Versión 4.0 - Integración con LangChain y Gemini 2.5-pro
+"""
+
 import os
-from langchain_community.llms import Ollama
+from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import AgentExecutor, create_react_agent
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
@@ -11,7 +17,8 @@ from agent_tools import (
     solicitar_nueva_herramienta_tool,
     generar_acuerdo_ia_tool,
     generar_acuerdo_template_tool,
-    generar_acuerdo_integrado_tool
+    generar_acuerdo_integrado_tool,
+    leer_plantilla_tool
 )
 
 # --- Carga de Prompts Externos ---
@@ -24,27 +31,33 @@ except FileNotFoundError as e:
     print(f"ERROR: No se encontró un archivo de prompt requerido: {e.filename}")
     exit()
 
-# --- Plantilla de Ensamblaje ---
+# --- Plantilla de Ensamblaje para Gemini ---
 REACT_PROMPT_TEMPLATE = """
 {persona_prompt}
 {operational_prompt}
 
-TOOLS:
-------
+You are an AI assistant specialized in mediation agreement generation. You have access to various tools to help you create professional legal documents.
+
+TOOLS AVAILABLE:
 {tools}
 
-Use the following format:
+INSTRUCTIONS:
+- Always think step by step about what you need to do
+- Use the available tools when necessary to gather information or perform actions
+- For agreement generation, first read the template file, then use the case data to create the document
+- Be thorough and professional in your responses
+- When generating agreements, ensure all case details are properly incorporated
 
+RESPONSE FORMAT:
 Question: the input question you must answer
-Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
-Final Answer: the final answer to the original input question
+Thought: your reasoning about what to do next
+Action: the tool to use (if needed), must be one of [{tool_names}]
+Action Input: the input parameters for the tool
+Observation: the result from the tool
+... (repeat Thought/Action/Action Input/Observation as needed)
+Final Answer: your complete response to the user
 
-Begin!
+Begin your work:
 
 Question: {input}
 Thought: {agent_scratchpad}
@@ -52,8 +65,23 @@ Thought: {agent_scratchpad}
 
 class AgentCore:
     def __init__(self):
-        print("Inicializando el Núcleo del Agente v3.0 (Prompts Separados)...")
-        self.llm = Ollama(model="gpt-oss:20b")
+        print("Inicializando el Núcleo del Agente v4.0 (Gemini 2.5-pro)...")
+
+        # Cargar variables de entorno
+        load_dotenv()
+
+        # Configurar Gemini
+        gemini_api_key = os.getenv("GEMINI_API_KEY")
+        if not gemini_api_key:
+            raise ValueError("GEMINI_API_KEY no encontrada en el archivo .env")
+
+        self.llm = ChatGoogleGenerativeAI(
+            model="gemini-2.5-pro",  # Usando gemini-2.5-pro como especificado por el usuario
+            google_api_key=gemini_api_key,
+            temperature=0.1,
+            max_tokens=4096,
+            verbose=True
+        )
 
         # --- Lista completa de herramientas ---
         self.tools = [
@@ -62,7 +90,8 @@ class AgentCore:
             solicitar_nueva_herramienta_tool,
             generar_acuerdo_ia_tool,
             generar_acuerdo_template_tool,
-            generar_acuerdo_integrado_tool
+            generar_acuerdo_integrado_tool,
+            leer_plantilla_tool
         ]
         print(f"Herramientas cargadas: {[tool.name for tool in self.tools]}")
 
@@ -100,19 +129,30 @@ class AgentCore:
             handle_parsing_errors=True,
         )
         print("="*30)
-        print("Núcleo del Agente listo para operar.")
+        print("Núcleo del Agente (Gemini 2.5-pro) listo para operar.")
         print("="*30)
 
     def run_intent(self, user_intent: str):
         """
-        Ejecuta una intención del usuario a través del agente.
+        Ejecuta una intención del usuario a través del agente usando Gemini.
         """
         try:
             print(f"\n---> [USUARIO] PROCESANDO INTENCIÓN: '{user_intent}'")
-            response = self.agent_executor.invoke({"input": user_intent})
-            return response.get("output", "No se obtuvo una respuesta clara.")
+
+            # Usar invoke con el formato correcto para Gemini
+            response = self.agent_executor.invoke({
+                "input": user_intent,
+                "chat_history": []  # Inicializar historial de chat vacío
+            })
+
+            output = response.get("output", "No se obtuvo una respuesta clara.")
+            print(f"[AGENTE] Respuesta generada exitosamente")
+            return output
+
         except Exception as e:
-            return f"Ocurrió un error inesperado al procesar la intención: {e}"
+            error_msg = f"Error procesando la intención con Gemini: {str(e)}"
+            print(f"[ERROR] {error_msg}")
+            return error_msg
 
 
 # ==============================================================================

@@ -1,0 +1,46 @@
+Carátula: {caratula}
+Expediente: {numero_expediente}
+
+ACTA DE ACUERDO CONCILIATORIO
+EXPEDIENTE N°: {numero_expediente}
+CARÁTULA: "{caratula}"
+En la Ciudad Autónoma de Buenos Aires, a los {fecha_acuerdo} días del mes de {mes_acuerdo} de {anio_acuerdo}, en el marco de la audiencia de conciliación celebrada de manera VIRTUAL correspondiente al expediente de la referencia, ante mí, Dr. DARIO JAVIER RAMIREZ, Conciliador de Consumo Matrícula SCRC N° 470, comparecen:
+
+1. La PARTE REQUIRENTE:
+Sr. {actor.nombre_completo}, C.U.I.T. N° {actor.cuit}, con domicilio constituido en {actor.domicilio_real}, Ciudad Autónoma de Buenos Aires, en adelante "el Requirente".
+
+2. La PARTE REQUERIDA:
+{demandado.nombre_completo}, C.U.I.T. N° {demandado.cuit}, con domicilio en {demandado.domicilio_real}, Ciudad Autónoma de Buenos Aires, representada en este acto por su Apoderado, {abogado_demandado.nombre_completo}, con domicilio constituido en {abogado_demandado.domicilio_real}, Ciudad Autónoma de Buenos Aires, y que en adelante será nombrada en el presente acuerdo como "la Requerida".
+
+Abierto el acto por el Conciliador actuante y tras un intercambio de posiciones, las partes, en ejercicio de su autonomía de la voluntad y con el fin de poner término al presente reclamo, manifiestan haber alcanzado el siguiente acuerdo transaccional, que se regirá por las siguientes cláusulas y condiciones:
+
+CLÁUSULA PRIMERA: OBJETO Y ANTECEDENTES.
+El presente acuerdo tiene por objeto la total y definitiva extinción de las obligaciones emergentes del reclamo que diera origen al expediente de la referencia.
+
+CLÁUSULA SEGUNDA: ACUERDO TRANSACCIONAL.
+LA REQUERIDA, {demandado.nombre_completo}, sin reconocer hechos ni derecho alguno y al solo efecto conciliatorio, ofrece al Requirente, y éste acepta, las siguientes obligaciones:
+
+1. OBLIGACIÓN DE DAR SUMA DE DINERO: La Requerida se compromete a abonar al Requirente, a título de gesto comercial, la suma única y total de PESOS {monto_acuerdo} ($ {monto_acuerdo}). Dicho importe se hará efectivo mediante transferencia bancaria en un plazo máximo de {plazo_pago} días hábiles a contar desde la firma del presente. La transferencia se realizará a la cuenta de titularidad del Requirente, cuyos datos son:
+{datos_bancarios}
+
+CLÁUSULA TERCERA: ACEPTACIÓN Y RENUNCIA DEL REQUIRENTE.
+EL REQUIRENTE manifiesta su plena conformidad y acepta el ofrecimiento formulado en la cláusula anterior. En consecuencia, declara que una vez cumplidas en su totalidad las obligaciones asumidas, nada más tendrá que reclamar a {demandado.nombre_completo} por el asunto que dio origen a este reclamo.
+
+CLÁUSULA CUARTA: COSTAS Y HONORARIOS DEL CONCILIADOR.
+Las costas del presente procedimiento, incluyendo los honorarios del Conciliador actuante, serán a exclusivo cargo de LA REQUERIDA.
+
+CLÁUSULA QUINTA: EFECTOS Y HOMOLOGACIÓN.
+Una vez cumplidas en su totalidad las obligaciones asumidas, las partes nada más tendrán que reclamarse. El presente acuerdo tendrá para las partes el efecto de cosa juzgada una vez homologado por la autoridad de aplicación.
+
+CLÁUSULA SEXTA: INCUMPLIMIENTO.
+La mora en el cumplimiento de cualquiera de las obligaciones asumidas se producirá de pleno derecho por el mero vencimiento de los plazos estipulados.
+
+CLÁUSULA SÉPTIMA: JURISDICCIÓN.
+Para el caso de incumplimiento, las partes se someten a la jurisdicción de los Tribunales Ordinarios.
+
+FIRMAS:
+_________________________                    _________________________
+    EL REQUIRENTE                                    LA REQUERIDA
+
+_________________________
+    EL CONCILIADOR

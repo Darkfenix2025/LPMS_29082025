@@ -153,22 +153,31 @@ class AgentInterface:
         self._load_cases()
 
         # Mensaje de bienvenida
-        self._add_message("Agente IA", "¡Hola! Soy tu asistente inteligente para generación de acuerdos de mediación.\n\n"
-                                       "Ahora tengo acceso directo a tu base de datos de casos y múltiples herramientas:\n\n"
-                                       "🔍 FUNCIONES DE BASE DE DATOS:\n"
-                                       "• Ver todos tus casos ordenados alfabéticamente\n"
-                                       "• Buscar casos por carátula, expediente o cliente\n"
-                                       "• Acceder automáticamente a todos los datos del expediente\n\n"
-                                       "📄 HERRAMIENTAS DE GENERACIÓN:\n"
-                                       "• Generar acuerdos usando templates personalizables\n"
-                                       "• Crear acuerdos con IA avanzada y análisis de documentos\n"
-                                       "• Generar documentos Word profesionales automáticamente\n\n"
-                                       "Ejemplos de consultas:\n"
-                                       "• 'Genera un acuerdo usando template para el caso seleccionado'\n"
-                                       "• 'Crea acuerdo de divorcio con IA para el caso actual'\n"
-                                       "• 'Necesito un acuerdo laboral con monto de $75,000'\n"
-                                       "• 'Genera acuerdo comercial con representante legal'\n\n"
-                                       "Selecciona un caso de la lista y escribe tu consulta.")
+        welcome_message = "¡Hola! Soy tu asistente inteligente para generación de acuerdos de mediación.\n\n"
+        if self.preselected_case_caratula:
+            welcome_message += f"📋 Caso pre-seleccionado: {self.preselected_case_caratula}\n\n"
+
+        welcome_message += "Ahora tengo acceso directo a tu base de datos de casos y múltiples herramientas:\n\n"
+        welcome_message += "🔍 FUNCIONES DE BASE DE DATOS:\n"
+        welcome_message += "• Ver todos tus casos ordenados alfabéticamente\n"
+        welcome_message += "• Buscar casos por carátula, expediente o cliente\n"
+        welcome_message += "• Acceder automáticamente a todos los datos del expediente\n\n"
+        welcome_message += "📄 HERRAMIENTAS DE GENERACIÓN:\n"
+        welcome_message += "• Generar acuerdos usando templates personalizables\n"
+        welcome_message += "• Crear acuerdos con IA avanzada y análisis de documentos\n"
+        welcome_message += "• Generar documentos Word profesionales automáticamente\n\n"
+        welcome_message += "Ejemplos de consultas:\n"
+        welcome_message += "• 'Genera un acuerdo usando template para el caso seleccionado'\n"
+        welcome_message += "• 'Crea acuerdo de divorcio con IA para el caso actual'\n"
+        welcome_message += "• 'Necesito un acuerdo laboral con monto de $75,000'\n"
+        welcome_message += "• 'Genera acuerdo comercial con representante legal'\n\n"
+
+        if self.preselected_case_caratula:
+            welcome_message += f"✅ Ya tienes seleccionado el caso '{self.preselected_case_caratula}'. ¡Puedes empezar a escribir tu consulta!\n\n"
+        else:
+            welcome_message += "Selecciona un caso de la lista y escribe tu consulta."
+
+        self._add_message("Agente IA", welcome_message)
 
     def _initialize_agent(self):
         """Inicializar el agente inteligente"""

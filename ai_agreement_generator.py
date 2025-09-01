@@ -64,7 +64,7 @@ class AIAgreementGenerator:
         # Inicializar LLM si está disponible
         if LANGCHAIN_AVAILABLE:
             try:
-                self.llm = Ollama(model="gpt-oss:20b")
+                self.llm = Ollama(model="mistral-small:22b")
                 self.logger.info("LLM inicializado correctamente")
             except Exception as e:
                 self.logger.error(f"Error inicializando LLM: {e}")

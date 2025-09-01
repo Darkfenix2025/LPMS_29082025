@@ -1,0 +1,121 @@
+================================================================================
+PLACEHOLDER ANALYSIS REPORT
+================================================================================
+
+Template file: template_with_placeholders.txt
+Total placeholders found: 16
+
+PLACEHOLDER MAPPING:
+--------------------------------------------------
+[ERR] {abogado_demandado.domicilio_real}
+   Status: unmapped
+   Table: N/A
+   Field: N/A
+   Description: No mapping found
+
+[OK] {abogado_demandado.nombre_completo}
+   Status: mapped
+   Table: contactos
+   Field: nombre_completo
+   Description: Defendant lawyer full name (where rol_principal = "Abogado" and represents defendant)
+
+[ERR] {actor.cuit}
+   Status: unmapped
+   Table: N/A
+   Field: N/A
+   Description: No mapping found
+
+[ERR] {actor.domicilio_real}
+   Status: unmapped
+   Table: N/A
+   Field: N/A
+   Description: No mapping found
+
+[OK] {actor.nombre_completo}
+   Status: mapped
+   Table: contactos
+   Field: nombre_completo
+   Description: Actor full name (where rol_principal = "Actor")
+
+[GEN] {anio_acuerdo}
+   Status: generated
+   Table: N/A
+   Field: generated
+   Description: Agreement year (current year)
+
+[OK] {caratula}
+   Status: mapped
+   Table: casos
+   Field: caratula
+   Description: Case title/caption
+
+[OK] {datos_bancarios}
+   Status: mapped
+   Table: roles_en_caso
+   Field: datos_bancarios
+   Description: Banking details for the party
+
+[ERR] {demandado.cuit}
+   Status: unmapped
+   Table: N/A
+   Field: N/A
+   Description: No mapping found
+
+[ERR] {demandado.domicilio_real}
+   Status: unmapped
+   Table: N/A
+   Field: N/A
+   Description: No mapping found
+
+[OK] {demandado.nombre_completo}
+   Status: mapped
+   Table: contactos
+   Field: nombre_completo
+   Description: Defendant full name (where rol_principal = "Demandado")
+
+[GEN] {fecha_acuerdo}
+   Status: generated
+   Table: N/A
+   Field: generated
+   Description: Agreement date (current date)
+
+[GEN] {mes_acuerdo}
+   Status: generated
+   Table: N/A
+   Field: generated
+   Description: Agreement month in Spanish (current month)
+
+[PAR] {monto_acuerdo}
+   Status: parameter
+   Table: N/A
+   Field: parameter
+   Description: Agreement amount (provided as parameter)
+
+[OK] {numero_expediente}
+   Status: mapped
+   Table: casos
+   Field: numero_expediente
+   Description: Case file number
+
+[PAR] {plazo_pago}
+   Status: parameter
+   Table: N/A
+   Field: parameter
+   Description: Payment deadline (provided as parameter)
+
+MISSING DATABASE FUNCTIONS:
+--------------------------------------------------
+[MISSING] get_partes_by_caso_and_tipo(case_id, tipo) - Function called by AI agreement generator but doesn't exist
+[MISSING] get_partes_by_caso_and_tipo(case_id, 'ACTOR') - To get actors for a case
+[MISSING] get_partes_by_caso_and_tipo(case_id, 'DEMANDADO') - To get defendants for a case
+[MISSING] get_representantes_by_party(case_id, party_id) - Function to get lawyers representing a specific party
+[MISSING] get_abogados_by_caso_and_tipo(case_id, tipo) - To get lawyers by case and party type
+
+SUMMARY:
+--------------------------------------------------
+[OK] Mapped to database: 6
+[GEN] Generated values: 3
+[PAR] Parameter values: 2
+[ERR] Unmapped: 5
+
+[WARNING] Some placeholders need attention.

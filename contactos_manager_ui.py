@@ -88,7 +88,9 @@ class ContactosManagerWindow(tk.Toplevel):
         h_scrollbar.grid(row=1, column=0, sticky="ew")
 
         tree_frame.rowconfigure(0, weight=1)
+        tree_frame.rowconfigure(1, weight=0)  # Configure row for horizontal scrollbar
         tree_frame.columnconfigure(0, weight=1)
+        tree_frame.columnconfigure(1, weight=0)  # Configure column for vertical scrollbar
 
         # Bindings
         self.contacts_tree.bind('<<TreeviewSelect>>', self._on_contact_select)
@@ -152,12 +154,20 @@ class ContactosManagerWindow(tk.Toplevel):
             elif contact.get('dni'):
                 cuit_dni = f"DNI: {contact['dni']}"
 
-            # Determinar contacto principal (email o teléfono)
+            # Determinar contacto principal (email y teléfono)
             contacto_principal = ""
-            if contact.get('email'):
-                contacto_principal = contact['email']
-            elif contact.get('telefono'):
-                contacto_principal = contact['telefono']
+            email = (contact.get('email') or '').strip()
+            telefono = (contact.get('telefono') or '').strip()
+
+            # Mostrar ambos campos si están disponibles
+            if email and telefono:
+                contacto_principal = f"{email} / {telefono}"
+            elif email:
+                contacto_principal = email
+            elif telefono:
+                contacto_principal = telefono
+            else:
+                contacto_principal = "Sin contacto"
 
             self.contacts_tree.insert("", tk.END, values=(
                 contact_id, nombre, tipo, cuit_dni, contacto_principal
@@ -173,7 +183,7 @@ class ContactosManagerWindow(tk.Toplevel):
             self.filtered_contacts = []
             for contact in self.contacts_data:
                 # Buscar en nombre, email, teléfono, CUIT, DNI
-                searchable_text = f"{contact.get('nombre_completo', '')} {contact.get('email', '')} {contact.get('telefono', '')} {contact.get('cuit', '')} {contact.get('dni', '')}".lower()
+                searchable_text = f"{contact.get('nombre_completo', '')} {(contact.get('email') or '')} {(contact.get('telefono') or '')} {(contact.get('cuit') or '')} {(contact.get('dni') or '')}".lower()
                 if search_term in searchable_text:
                     self.filtered_contacts.append(contact)
 
@@ -584,13 +594,18 @@ class ContactosManagerWindow(tk.Toplevel):
                 messagebox.showerror("Error", "No se pudo cargar la información del contacto.", parent=self)
                 return
 
-            telefono = contact.get('telefono', '').strip()
+            telefono = (contact.get('telefono') or '').strip()
             if not telefono:
                 messagebox.showwarning("Advertencia", "El contacto no tiene teléfono registrado.", parent=self)
                 return
 
             # Limpiar número de teléfono (remover espacios, guiones, etc.)
             telefono_limpio = re.sub(r'[^\d+]', '', telefono)
+
+            # Validar que el número tenga al menos 6 dígitos
+            if len(telefono_limpio) < 6:
+                messagebox.showwarning("Advertencia", "El número de teléfono parece ser demasiado corto.", parent=self)
+                return
 
             # Si no tiene código de país, asumir Argentina (+54)
             if not telefono_limpio.startswith('+'):
@@ -600,12 +615,16 @@ class ContactosManagerWindow(tk.Toplevel):
                     telefono_limpio = '+54' + telefono_limpio
 
             # Crear mensaje predeterminado
-            nombre = contact.get('nombre_completo', 'Contacto')
+            nombre = (contact.get('nombre_completo') or 'Contacto').strip()
             mensaje = f"Hola {nombre}, te contacto desde LPMS Legal."
 
             # Abrir WhatsApp Web con wa.me
-            whatsapp_url = f"https://wa.me/{telefono_limpio}?text={urllib.parse.quote(mensaje)}"
-            webbrowser.open(whatsapp_url)
+            whatsapp_url = f"https://wa.me/{telefono_limpio}?text={urllib.parse.quote(mensaje, safe='')}"
+            try:
+                webbrowser.open(whatsapp_url)
+            except Exception as url_error:
+                messagebox.showerror("Error", f"Error al abrir WhatsApp: {str(url_error)}", parent=self)
+                return
 
             messagebox.showinfo("WhatsApp", f"Abriendo WhatsApp para: {telefono}", parent=self)
 

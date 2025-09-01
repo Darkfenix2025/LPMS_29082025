@@ -43,7 +43,7 @@ import time
 print("[IA Analyzer] [LOCAL] Configurado para IA local con Ollama")
 
 # Configuración por defecto para Ollama
-DEFAULT_OLLAMA_MODEL = "gpt-oss:20b"
+DEFAULT_OLLAMA_MODEL = "mistral-small:22b"
 OLLAMA_BASE_URL = "http://localhost:11434"
 OLLAMA_TIMEOUT = 30  # segundos
 
@@ -425,7 +425,7 @@ def diagnosticar_sistema():
         if not success:
             print(f"[ERROR] Error conectando con Ollama: {error_msg}")
             print("[INFO] Asegúrese de ejecutar: 'ollama serve' y tener el modelo disponible")
-            print("[INFO] Para instalar el modelo: 'ollama pull gpt-oss-20b'")
+            print("[INFO] Para instalar el modelo: 'ollama pull mistral-small:22b'")
             return False
         print("[OK] Conexión con Ollama exitosa")
 

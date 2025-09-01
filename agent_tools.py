@@ -1,4 +1,5 @@
 import logging
+import os
 from langchain.tools import StructuredTool
 from pydantic.v1 import BaseModel, Field
 from typing import Type, Dict, Any, Optional, List, Tuple
@@ -777,11 +778,21 @@ def _ejecutar_calculo(expresion: str) -> str:
             # Fallback usando eval() con restricciones de seguridad
             # Solo permitir operaciones matemáticas básicas
             import re
-            if not re.match(r'^[0-9+\-*/().\s]+$', expresion):
+
+            # Validar que solo contenga caracteres permitidos
+            patron_seguro = r'^[0-9+\-*/().\s]+$'
+            if not re.match(patron_seguro, expresion):
                 return f"Error: La expresión contiene caracteres no permitidos. Solo se permiten números y operadores matemáticos básicos (+, -, *, /, (), .)."
 
-            # Evaluar con restricciones
-            resultado = eval(expresion, {"__builtins__": {}}, {})
+            # Limpiar la expresión (remover espacios)
+            expresion_limpia = re.sub(r'\s+', '', expresion)
+
+            # Verificar que no esté vacía después de limpiar
+            if not expresion_limpia:
+                return f"Error: La expresión está vacía después de remover espacios."
+
+            # Evaluar con restricciones de seguridad
+            resultado = eval(expresion_limpia, {"__builtins__": {}}, {})
 
         return f"El resultado del cálculo '{expresion}' es: {resultado}"
 
@@ -803,6 +814,88 @@ def _registrar_solicitud_herramienta(descripcion_necesidad: str) -> str:
         return "He registrado tu solicitud. El equipo de desarrollo ha sido notificado."
     except Exception as e:
         return f"No pude registrar la solicitud debido a un error: {e}"
+
+
+def _leer_plantilla(filepath: str) -> str:
+    """
+    Lee el contenido completo de un archivo de texto y lo devuelve como un string.
+    Útil para cargar plantillas o modelos de documentos que el agente debe seguir.
+    Asegúrate de que la ruta del archivo sea correcta.
+
+    Args:
+        filepath: Ruta completa al archivo de plantilla
+
+    Returns:
+        str: Contenido del archivo o mensaje de error
+    """
+    try:
+        # Si el filepath viene como diccionario (error común del agente), extraer el valor
+        if isinstance(filepath, dict) and 'filepath' in filepath:
+            filepath = filepath['filepath']
+
+        # Si el filepath viene como string que representa un diccionario (caso especial del agente)
+        elif isinstance(filepath, str) and filepath.strip().startswith('{') and filepath.strip().endswith('}'):
+            try:
+                # Intentar parsear como JSON
+                import json
+                parsed_dict = json.loads(filepath.strip())
+                if isinstance(parsed_dict, dict) and 'filepath' in parsed_dict:
+                    filepath = parsed_dict['filepath']
+            except (json.JSONDecodeError, KeyError):
+                # Si no se puede parsear, intentar extraer manualmente
+                if '"filepath":' in filepath and '"modelo_acuerdo.txt"' in filepath:
+                    filepath = 'modelo_acuerdo.txt'
+
+        # Verificar que sea un string válido
+        if not isinstance(filepath, str):
+            return f"Error: El filepath debe ser un string, recibido: {type(filepath)}"
+
+        # Limpiar el filepath
+        filepath = filepath.strip()
+
+        # Si es solo el nombre del archivo (sin ruta), buscar en el directorio del script
+        if not os.path.dirname(filepath):
+            # Obtener el directorio donde está ubicado este archivo (agent_tools.py)
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            filepath = os.path.join(script_dir, filepath)
+
+        # Verificar que el archivo existe
+        if not os.path.exists(filepath):
+            return f"Error: El archivo no se encontró en la ruta '{filepath}'."
+
+        # Verificar que sea un archivo de texto
+        if not filepath.lower().endswith('.txt'):
+            return f"Error: El archivo debe tener extensión .txt. Archivo proporcionado: '{filepath}'."
+
+        # Leer el contenido del archivo con manejo de diferentes encodings
+        content = None
+        encodings_to_try = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
+
+        for encoding in encodings_to_try:
+            try:
+                with open(filepath, 'r', encoding=encoding) as f:
+                    content = f.read()
+                break  # Si se leyó correctamente, salir del loop
+            except UnicodeDecodeError:
+                continue  # Probar con el siguiente encoding
+
+        if content is None:
+            return f"Error: No se pudo leer el archivo '{filepath}' con ninguno de los encodings probados."
+
+        # Verificar que el archivo no esté vacío
+        if not content.strip():
+            return f"Error: El archivo '{filepath}' está vacío."
+
+        return f"Plantilla cargada exitosamente desde '{filepath}':\n\n{content}"
+
+    except FileNotFoundError:
+        return f"Error: El archivo no se encontró en la ruta '{filepath}'."
+    except PermissionError:
+        return f"Error: No tienes permisos para leer el archivo '{filepath}'."
+    except UnicodeDecodeError:
+        return f"Error: El archivo '{filepath}' no tiene codificación UTF-8 válida."
+    except Exception as e:
+        return f"Error al leer el archivo '{filepath}': {str(e)}"
 
 
 def _ejecutar_generacion_acuerdo_ia(
@@ -1272,6 +1365,11 @@ solicitar_nueva_herramienta_tool = StructuredTool.from_function(
     args_schema=SolicitarHerramientaArgs
 )
 
+# --- Esquema de Argumentos para Leer Plantilla ---
+class LeerPlantillaArgs(BaseModel):
+    filepath: str = Field(description="Ruta completa al archivo de plantilla (.txt) que se desea leer.")
+
+
 # --- Esquema de Argumentos para Generar Acuerdo con Template ---
 class GenerarAcuerdoTemplateArgs(BaseModel):
     id_del_caso: int = Field(description="ID numérico del caso.")
@@ -1281,6 +1379,7 @@ class GenerarAcuerdoTemplateArgs(BaseModel):
     cbu_actor: str = Field(description="CBU de 22 dígitos de la cuenta del actor.")
     alias_actor: str = Field(description="Alias de la cuenta del actor.")
     cuit_actor: str = Field(description="CUIT o CUIL del actor, con guiones.")
+    contexto_adicional: Optional[str] = Field(default=None, description="Contexto adicional del caso y instrucciones del usuario para integrar en el acuerdo.")
 
 
 def _ejecutar_generacion_acuerdo_template(
@@ -1290,7 +1389,8 @@ def _ejecutar_generacion_acuerdo_template(
     banco_actor: str,
     cbu_actor: str,
     alias_actor: str,
-    cuit_actor: str
+    cuit_actor: str,
+    contexto_adicional: Optional[str] = None
 ) -> str:
     """
     Función principal que ejecuta la generación de acuerdos usando templates de texto.
@@ -1547,6 +1647,11 @@ def _ejecutar_generacion_acuerdo_template(
                 "cuit_actor": cuit_actor.strip()
             }
 
+            # Agregar contexto adicional si está disponible
+            if contexto_adicional:
+                details_acuerdo["contexto_adicional"] = contexto_adicional.strip()
+                logger.info(f"[{operation_id}] Contexto adicional agregado al acuerdo: {len(contexto_adicional)} caracteres")
+
             phase_times['data_preparation'] = time.time() - phase_start
             logger.info(f"[{operation_id}] Agreement data prepared successfully in {phase_times['data_preparation']:.3f}s")
 
@@ -1694,8 +1799,15 @@ generar_acuerdo_ia_tool = StructuredTool.from_function(
 generar_acuerdo_template_tool = StructuredTool.from_function(
     func=_ejecutar_generacion_acuerdo_template,
     name="generar_acuerdo_template_tool",
-    description="Genera acuerdos de mediación usando templates de texto personalizables. Esta herramienta utiliza un archivo modelo_acuerdo.txt como base y reemplaza automáticamente los datos del caso seleccionado. Es perfecta para generar acuerdos rápidos y consistentes basados en plantillas predefinidas.",
+    description="Genera acuerdos de mediación usando templates de texto personalizables. Esta herramienta utiliza un archivo modelo_acuerdo.txt como base y reemplaza automáticamente los datos del caso seleccionado. Es perfecta para generar acuerdos rápidos y consistentes basados en plantillas predefinidas. Puede integrar contexto adicional del caso y instrucciones específicas del usuario.",
     args_schema=GenerarAcuerdoTemplateArgs
+)
+
+leer_plantilla_tool = StructuredTool.from_function(
+    func=_leer_plantilla,
+    name="leer_plantilla_de_acuerdo",
+    description="Permite leer un archivo .txt desde el disco para usarlo como plantilla o modelo para la redacción de un documento. Es útil para cargar plantillas de acuerdos de mediación que el agente debe seguir como base para generar documentos personalizados.",
+    args_schema=LeerPlantillaArgs
 )
 
 

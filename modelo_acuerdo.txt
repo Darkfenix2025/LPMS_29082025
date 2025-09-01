@@ -1,39 +1,77 @@
-Car·tula: DISANTI, ADOLFO RUBEN  c/ PILISAR S. A. s/ RECLAMO PREVIO DE CONSUMO
-Expediente: J-01-00091307-9/2025
+Car√°tula: {{caratula}}
+Expediente: {{numero_expediente}}/{{anio}}
 
-°Por supuesto! AquÌ tienes el modelo de convenio adaptado con los datos y las cl·usulas para el nuevo reclamo. He reestructurado el texto que me pasaste para que se integre de forma clara y profesional en el formato del acuerdo.
+En la Ciudad Aut√≥noma de Buenos Aires, a los {{fecha_actual}}, en el marco de la audiencia de conciliaci√≥n celebrada de manera VIRTUAL correspondiente al expediente de referencia, ante m√≠, Dr. DARIO JAVIER RAMIREZ, Conciliador de Consumo Matr√≠cula SCRC N¬∞ 470, comparecen:
 
-ACTA DE ACUERDO CONCILIATORIO
-EXPEDIENTE N∞: J-01-00091307-9/2025
-CAR¡TULA: "DISANTI ADOLFO RUBEN C/ PILISAR S. A. S/ RECLAMO PREVIO DE CONSUMO"
-En la Ciudad AutÛnoma de Buenos Aires, a los 28 dÌas del mes de agosto de 2025, en el marco de la audiencia de conciliaciÛn celebrada de manera VIRTUAL correspondiente al expediente de la referencia, ante mÌ, Dr. DARIO JAVIER RAMIREZ, Conciliador de Consumo MatrÌcula SCRC N∞ 470, comparecen:
-1. La PARTE REQUIRENTE:
-Sr. ADOLFO RUBEN DISANTI, C.U.I.T. N∞ 20226765132, con domicilio constituido en JosÈ C. Paz 3069, Parque Patricios (CP: 1448), Ciudad AutÛnoma de Buenos Aires, en adelante "el Requirente".
-2. La PARTE REQUERIDA:
-PILISAR S. A., C.U.I.T. N∞ 33709180849, con domicilio en PÈrez Roque 3650, Ciudad AutÛnoma de Buenos Aires (CP: 1430), representada en este acto por su Apoderado, Dr. EZEQUIEL ESTEBAN, con domicilio constituido en Tucum·n 834, Piso 2, Depto. M, San Nicol·s (CP: 1149), Ciudad AutÛnoma de Buenos Aires, y que en adelante ser· nombrada en el presente acuerdo como "la Requerida".
-Abierto el acto por el Conciliador actuante y tras un intercambio de posiciones, las partes, en ejercicio de su autonomÌa de la voluntad y con el fin de poner tÈrmino al presente reclamo, manifiestan haber alcanzado el siguiente acuerdo transaccional, que se regir· por las siguientes cl·usulas y condiciones:
+{% for act in ACTORES %}
+POR LA PARTE REQUIRENTE, el/la Sr/a. {{act.nombre_completo}}, D.N.I. {{act.dni}}, con domicilio real en {{act.domicilio_real}}, en adelante "la Requirente".
+{% if act.representantes %}
+Representado por:
+{% for rep in act.representantes %}
+Dr./a. {{rep.nombre_completo}}, CUIT {{rep.cuit}}, quien acredita personer√≠a mediante {{rep.personeria}}.
+{% endfor %}
+{% else %}
+Sin patrocinio legal.
+{% endif %}
+{% endfor %}
 
-CL¡USULA PRIMERA: OBJETO Y ANTECEDENTES.
-El presente acuerdo tiene por objeto la total y definitiva extinciÛn de las obligaciones emergentes del reclamo que diera origen al expediente de la referencia, iniciado por el Requirente en los siguientes tÈrminos: ìEl 15/5/25 comprÈ un Lavarropas Inverter Philco Carga Frontal 11 Kg por mercadolibre a la tienda Newsan, me tenian que hacer la entrega el 4/6 (lo cual ya era una fecha muy lejana), llega el dia y no pasan en todo el dia, al otro dia me comunico que paso con la entrega y me dicen que "rechazaron" la entrega, lo cual es mentira porque no pasaron nunca, y que tengo que cancelar la compra, y se niegan a realizar la entrega, asi que quiero la entrega del lavarropas que compre y un resarcimiento por todo el tiempo que me hicieron perder y las molestas ocasionadasî.
-CL¡USULA SEGUNDA: ACUERDO TRANSACCIONAL.
-LA REQUERIDA, PILISAR S.A., sin reconocer hechos ni derecho alguno y al solo efecto conciliatorio, ofrece al Requirente, y Èste acepta, las siguientes obligaciones:
-1. OBLIGACI”N DE HACER: La Requerida se compromete a cumplir con la entrega de la unidad objeto de reclamo, un LAVARROPAS PHILCO CARGA FRONTAL DARK GRAY PHLF1114GI. La entrega se efectuar· en un plazo m·ximo de diez (10) dÌas h·biles desde la firma del presente, en el domicilio del Requirente sito en la calle Las Calas 570, Ciudad Evita, (entre Los Tulipanes y Las Amapolas), Pdo de La Matanza, Pcia de Buenos Aires. TelÈfono de contacto: 1157804918.
-2. OBLIGACI”N DE DAR SUMA DE DINERO: La Requerida se compromete a abonar al Requirente, a tÌtulo de gesto comercial, la suma ˙nica y total de PESOS CIENTO VEINTE MIL ($ 120.000). Dicho importe se har· efectivo mediante transferencia bancaria en un plazo m·ximo de diez (10) dÌas h·biles a contar desde la firma del presente acuerdo. La transferencia se realizar· a la cuenta de titularidad del Requirente, cuyos datos son:
-o Banco: Banco Galicia
-o CTA: 4017256-1 093-3
-o CBU: 0070093130004017256132
-o CUIL: 20226765132
-o ALIAS: disanti.galicia
-CL¡USULA TERCERA: ACEPTACI”N Y RENUNCIA DEL REQUIRENTE.
-EL REQUIRENTE manifiesta su plena conformidad y acepta el ofrecimiento formulado en la cl·usula anterior. En consecuencia, declara que una vez cumplidas en su totalidad ambas obligaciones, nada m·s tendr· que reclamar a PILISAR S.A. por el asunto que dio origen a este reclamo ni por cualquier otro concepto derivado de los mismos hechos, otorgando por el presente el m·s amplio y definitivo finiquito.
-CL¡USULA CUARTA: COSTAS Y HONORARIOS DEL CONCILIADOR.
-Las costas del presente procedimiento, incluyendo los honorarios del Conciliador actuante, Dr. DARIO JAVIER RAMIREZ (Mat. SCRC N∞ 470), ser·n a exclusivo cargo de LA REQUERIDA. La Requerida se compromete a abonar la suma de $ 83.340,25 (pesos ochenta y tres mil trescientos cuarenta con 25/100) en concepto de honorarios, dado el monto del acuerdo que totaliza $720.000 (pesos setecientos veinte mil) dado el valor del product ($600.000) y el reconocimiento a favor del Requirente ($120.000). Los honorarios se depositar·n en la cuenta cuyos datos son: Nombre: DARIO JAVIER, Apellido: RAMIREZ, Cuil/Cuit: 20250542845, Caja de ahorro en $: 000000280200111551, Alias: CARA.RENO.BOLA, CBU: 0290028510000001115511. El pago deber· realizarse dentro del plazo de diez (10) dÌas habiles posteriores a la suscripciÛn del presente, contra entrega de la factura correspondiente.
-CL¡USULA QUINTA: EFECTOS Y HOMOLOGACI”N.
-Una vez cumplidas en su totalidad las obligaciones asumidas, las partes nada m·s tendr·n que reclamarse. El presente acuerdo tendr· para las partes el efecto de cosa juzgada una vez homologado por la autoridad de aplicaciÛn. Las partes solicitan expresamente su homologaciÛn.
-CL¡USULA SEXTA: INCUMPLIMIENTO.
-La mora en el cumplimiento de cualquiera de las obligaciones asumidas se producir· de pleno derecho por el mero vencimiento de los plazos estipulados. El incumplimiento habilitar· al Requirente a ejecutar el presente acuerdo por ante la justicia competente, con m·s los intereses y costas que correspondan.
-CL¡USULA S…PTIMA: JURISDICCI”N.
-Para el caso de incumplimiento, las partes se someten a la jurisdicciÛn de los Tribunales Ordinarios ante el Fuero Contencioso Administrativo Tributario y de Relaciones de Consumo de la Capital Federal, renunciando a cualquier otro fuero o jurisdicciÛn que pudiera corresponderles.
+POR LA PARTE REQUERIDA, se presenta/n 
+{% for dem in DEMANDADOS %}
+{{dem.nombre_completo}}, C.U.I.T. N¬∞ {{dem.cuit}}, con domicilio legal en {{dem.domicilio_legal}},  
+{% if dem.representantes %}
+representada en este acto por 
+{% for rep in dem.representantes %}
+su Apoderado, Dr./a. {{rep.nombre_completo}}, CUIT {{rep.cuit}}, quien acredita personer√≠a mediante {{rep.personeria}},
+{% endfor %}
+{% else %}
+sin representante legal no se puede cerrar acta!!
+{% endif %}
+y que en adelante ser√° nombrada en el presente acuerdo como "la Requerida".
+{% endfor %}
 
+Abierto el acto por el Conciliador actuante y tras un intercambio de posiciones, las partes, en ejercicio de su autonom√≠a de la voluntad y con el fin de poner t√©rmino al presente reclamo, manifiestan haber alcanzado el siguiente acuerdo transaccional, que se regir√° por las siguientes cl√°usulas y condiciones:
 
+ACUERDO
+
+CL√ÅUSULA PRIMERA: OBJETO Y ANTECEDENTES.El presente acuerdo tiene por objeto la total y definitiva extinci√≥n de las obligaciones emergentes del reclamo que diera origen al expediente de la referencia, iniciado por el Requirente en los siguientes t√©rminos: "{{detalles_caso}}"
+
+El presente acuerdo extingue, asimismo, cualquier otra pretensi√≥n conexa que las partes pudieran tener entre s√≠, vinculada directa o indirectamente con los hechos descriptos.
+
+CL√ÅUSULA SEGUNDA: ACUERDO TRANSACCIONAL.
+LA REQUERIDA, {% for dem in DEMANDADOS %}
+ {{dem.nombre_completo}}, 
+{% endfor %}
+sin reconocer hechos ni derecho alguno y al solo efecto conciliatorio, se obliga a: << DETALLE ACUERDO ARRIBADO >> y pagar√° al actor la suma de PESOS {{monto_compensacion_letras}} ($ {{monto_compensacion_numeros}}) en un plazo de {{plazo_pago_letras}} ({{plazo_pago_dias}}) d√≠as h√°biles a partir de la fecha de firma del presente acuerdo en la cuenta cuyos datos son: Banco: {{banco_actor}}, CBU: {{cbu_actor}}, Alias: {{alias_actor}}, CUIT/CUIL: {{cuit_actor}},
+
+{% if act.representantes %}
+CLAUSULA SEGUNDA (BIS): HONORARIOS DE LA REPRESENTACION LETRADA DE LA REQUIRENTE
+Los honorarios de la representaci√≥n letrada de la Requirente, Dr./a. {{rep.nombre_completo}}, CUIT {{rep.cuit}}, ser√°n a exclusivo cargo de LA REQUERIDA. La Requerida se compromete a abonar la suma de ${{monto_honorarios_letrado_numeros}} ({{monto_honorarios_letrado__letras}})  en la cuenta cuyos datos son: Banco: {{banco_letrado_actor}}, CBU: {{cbu_letrado_actor}}, Alias: {{alias_letrado_actor}}, CUIT/CUIL: {{rep.cuit}}. El pago deber√° realizarse dentro del plazo de {{plazo_pago_letras}} ({{plazo_pago_dias}}) posteriores a la suscripci√≥n del presente, contra entrega de la factura correspondiente.
+{% else %}
+{{}} 
+{% endif %}
+
+CL√ÅUSULA TERCERA: ACEPTACI√ìN Y RENUNCIA DE LA REQUIRENTE.
+{% for act in ACTORES %}
+LA REQUIRENTE, {{act.nombre_completo}}, manifiesta su plena conformidad y acepta el ofrecimiento formulado en la cl√°usula anterior. En consecuencia, declara que una vez cumplidas dichas obligaciones, nada m√°s tendr√° que reclamar a
+{% for dem in DEMANDADOS %}
+{{dem.nombre_completo}}
+{% if not loop.last %} y {% endif %}
+{% endfor %}
+por el asunto que dio origen a este reclamo ni por cualquier otro concepto derivado de los mismos hechos. Asimismo, LA REQUIRENTE renuncia expresamente a reclamar indemnizaciones de cualquier tipo y a iniciar nuevas acciones judiciales, extrajudiciales y/o administrativas contra
+{% for dem in DEMANDADOS %}
+{{dem.nombre_completo}}
+{% if not loop.last %} y {% endif %}
+{% endfor %}
+por esta misma causa, desistiendo de todos los t√©rminos de su reclamo original.
+{% endfor %}
+
+CL√ÅUSULA CUARTA: CONFIDENCIALIDAD.LAS PARTES acuerdan que la existencia y el contenido de este acuerdo son de car√°cter estrictamente confidencial. En consecuencia, se obligan a no divulgar a ninguna persona o entidad, ni a emitir comunicados o manifestaciones p√∫blicas respecto de los t√©rminos y contenido del presente, bajo apercibimiento de responder por los da√±os y perjuicios que dicho accionar pudiera ocasionar.
+
+CL√ÅUSULA QUINTA: COSTAS Y HONORARIOS DEL CONCILIADOR.Las costas del presente procedimiento, incluyendo los honorarios del Conciliador actuante, Dr. DARIO JAVIER RAMIREZ (Mat. SCRC N¬∞ 470), ser√°n a exclusivo cargo de LA REQUERIDA. La Requerida se compromete a abonar la suma de ${{monto_honorarios_mediador_numeros}} ({{monto_honorarios_mediador__letras}}) en concepto de honorarios en la cuenta cuyos datos son: Nombre: DARIO JAVIER, Apellido: RAMIREZ, Cuil/Cuit: 20250542845, Caja de ahorro en $: 000000280200111551, Alias: CARA.RENO.BOLA, CBU: 0290028510000001115511. El pago deber√° realizarse dentro del plazo de {{plazo_pago_letras}} ({{plazo_pago_dias}}) posteriores a la suscripci√≥n del presente, contra entrega de la factura correspondiente.
+
+CL√ÅUSULA SEXTA: EFECTOS Y HOMOLOGACI√ìN.Una vez cumplidas en su totalidad las obligaciones asumidas, las partes nada m√°s tendr√°n que reclamarse, otorg√°ndose el m√°s amplio, total y definitivo finiquito. El presente acuerdo tendr√° para las partes el efecto de cosa juzgada una vez homologado por la autoridad de aplicaci√≥n. Las partes solicitan expresamente su homologaci√≥n.
+
+CL√ÅUSULA S√âPTIMA: INCUMPLIMIENTO.La mora en el cumplimiento de cualquiera de las obligaciones asumidas se producir√° de pleno derecho por el mero vencimiento de los plazos estipulados. El incumplimiento habilitar√° a la parte cumplidora a ejecutar el presente acuerdo por ante la justicia competente.
+
+CL√ÅUSULA OCTAVA: JURISDICCI√ìN.Para el caso de incumplimiento, las partes se someten a la jurisdicci√≥n de los Tribunales Ordinarios ante el Fuero Contencioso Administrativo Tributario y de Relaciones de Consumo de la Capital Federal, renunciando a cualquier otro fuero o jurisdicci√≥n que pudiera corresponderles.
 

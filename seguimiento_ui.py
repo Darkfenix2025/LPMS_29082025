@@ -270,28 +270,28 @@ class SeguimientoTab(ttk.Frame):
             messagebox.showwarning("Advertencia", "No hay un caso seleccionado para generar el escrito.", parent=self)
 
     def _abrir_agente_ia_wrapper(self):
-        """Abre la interfaz del agente IA para generación de acuerdos con el caso actual"""
+        """Abre el Asistente de Acuerdos con el caso actual pre-cargado"""
         if not self.app_controller.selected_case:
-            messagebox.showwarning("Advertencia", "No hay un caso seleccionado para usar el agente IA.", parent=self)
+            messagebox.showwarning("Advertencia", "No hay un caso seleccionado para usar el Asistente de Acuerdos.", parent=self)
             return
 
         try:
-            # Importar y abrir la interfaz del agente
-            from agent_interface import open_agent_interface
+            # Importar y abrir el Asistente de Acuerdos
+            from agent_chat_window import open_agent_chat_window
             case_id = self.app_controller.selected_case['id']
             case_caratula = self.app_controller.selected_case.get('caratula', f'ID {case_id}')
 
-            # Abrir interfaz del agente con contexto del caso
-            agent_window = open_agent_interface(self.app_controller.root, case_id=case_id, case_caratula=case_caratula)
-            if agent_window:
-                print(f"[INFO] Interfaz del agente IA abierta para caso {case_id}: {case_caratula}")
+            # Abrir ventana de chat del asistente con contexto del caso
+            chat_window = open_agent_chat_window(self.app_controller.root, case_id=case_id, case_caratula=case_caratula)
+            if chat_window:
+                print(f"[INFO] Asistente de Acuerdos abierto para caso {case_id}: {case_caratula}")
         except Exception as e:
             messagebox.showerror(
                 "Error",
-                f"No se pudo abrir la interfaz del agente IA:\n{str(e)}",
+                f"No se pudo abrir el Asistente de Acuerdos:\n{str(e)}",
                 parent=self
             )
-            print(f"[ERROR] Error abriendo interfaz del agente desde seguimiento: {e}")
+            print(f"[ERROR] Error abriendo Asistente de Acuerdos desde seguimiento: {e}")
 
     def _on_double_click_editar(self, event=None):
         item_id_str = self.actividad_tree.identify_row(event.y)

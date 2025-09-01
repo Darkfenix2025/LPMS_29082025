@@ -977,8 +977,11 @@ class CRMLegalApp:
         except Exception as e:
             ttk.Label(logo_frame, text="Legal-IT").pack(pady=20)
             # Handle encoding issues in error message
-            error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
-            print(f"Error al cargar el logo: {error_msg}")
+            try:
+                error_msg = str(e).encode('utf-8', errors='replace').decode('utf-8')
+                print(f"Error al cargar el logo: {error_msg}")
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                print("Error al cargar el logo: [Error de codificación en el mensaje]")
             # Also handle system tray encoding issues
             try:
                 # Try to fix the system tray encoding issue

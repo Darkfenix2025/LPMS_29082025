@@ -19,20 +19,22 @@ load_dotenv()
 
 class ProspectDialogManager:
     """Clase que maneja los diálogos de consultas de prospectos"""
-    
+
     def __init__(self, app_controller):
         self.app_controller = app_controller
         self.db = db
+        self.consultation_saved = False  # Flag to track if consultation has been manually saved
     
     def open_consultation_dialog(self, prospect_data, consultation_data=None):
         """
         Abre el diálogo de consulta para un prospecto.
-        
+
         Args:
             prospect_data (dict): Datos del prospecto
             consultation_data (dict): Datos de consulta existente (opcional, para edición)
         """
         is_edit = consultation_data is not None
+        self.consultation_saved = is_edit  # Reset flag: True if editing existing, False if new
         
         dialog = tk.Toplevel(self.app_controller.root)
         dialog.title(f"{'Editar' if is_edit else 'Nueva'} Consulta - {prospect_data['nombre']}")
@@ -170,6 +172,8 @@ class ProspectDialogManager:
                     hechos_reformulados_ia=hechos_reformulados
                 )
                 if success:
+                    # Marcar como guardada para evitar auto-guardado duplicado
+                    self.consultation_saved = True
                     messagebox.showinfo("Éxito", "Consulta actualizada con éxito.", parent=self.app_controller.root)
                     dialog.destroy()
                 else:
@@ -183,10 +187,13 @@ class ProspectDialogManager:
                     hechos_reformulados_ia=hechos_reformulados
                 )
                 if consulta_id:
+                    # Marcar como guardada para evitar auto-guardado duplicado
+                    self.consultation_saved = True
+
                     # Actualizar estado del prospecto a "En Análisis" si está en "Consulta Inicial"
                     if prospect_data.get('estado') == 'Consulta Inicial':
                         self.app_controller.prospect_manager.update_prospect_status(prospect_data['id'], 'En Análisis')
-                    
+
                     messagebox.showinfo("Éxito", "Consulta guardada con éxito.", parent=self.app_controller.root)
                     dialog.destroy()
                 else:
@@ -255,6 +262,9 @@ class ProspectDialogManager:
                     messagebox.showerror("Error", "No se pudo guardar la consulta en la base de datos.", parent=dialog)
                     return
                 consultation_export_data['id'] = consultation_data['id']
+
+                # Marcar como guardada para evitar auto-guardado duplicado
+                self.consultation_saved = True
             else:
                 # Crear nueva consulta
                 consulta_id = self.db.add_consulta(
@@ -267,6 +277,9 @@ class ProspectDialogManager:
                     messagebox.showerror("Error", "No se pudo guardar la consulta en la base de datos.", parent=dialog)
                     return
                 consultation_export_data['id'] = consulta_id
+
+                # Marcar como guardada para evitar auto-guardado duplicado
+                self.consultation_saved = True
                 
                 # Actualizar estado del prospecto
                 if prospect_data.get('estado') == 'Consulta Inicial':
@@ -450,7 +463,7 @@ HECHOS REFORMULADOS:"""
 
             # Inicializar el modelo Ollama local
             llm = Ollama(
-                model="gpt-oss:20b",
+                model="mistral-small:22b",
                 temperature=0.3,
                 base_url="http://localhost:11434"
             )
@@ -472,12 +485,17 @@ HECHOS REFORMULADOS:"""
     def _auto_save_ai_analysis(self, prospect_data, relato_original, analisis_ia):
         """
         Guarda automáticamente el análisis de IA como una consulta temporal.
-        
+
         Args:
             prospect_data (dict): Datos del prospecto
             relato_original (str): Relato original del cliente
             analisis_ia (str): Análisis generado por IA
         """
+        # Si la consulta ya fue guardada manualmente, no hacer auto-guardado
+        if self.consultation_saved:
+            print("Auto-guardado omitido: la consulta ya fue guardada manualmente")
+            return
+
         try:
             import datetime
             
@@ -508,6 +526,8 @@ HECHOS REFORMULADOS:"""
                 )
                 if success:
                     print(f"Análisis IA actualizado en consulta existente ID: {consulta_existente['id']}")
+                    # Si se actualizó una consulta existente, significa que ya estaba guardada
+                    self.consultation_saved = True
                 else:
                     print("Error actualizando consulta existente con análisis IA")
             else:
@@ -521,12 +541,14 @@ HECHOS REFORMULADOS:"""
                 )
                 if consulta_id:
                     print(f"Nueva consulta creada con análisis IA, ID: {consulta_id}")
-                    
+
                     # Actualizar estado del prospecto si está en "Consulta Inicial"
                     if prospect_data.get('estado') == 'Consulta Inicial':
                         self.app_controller.prospect_manager.update_prospect_status(
                             prospect_data['id'], 'En Análisis'
                         )
+                    # Nueva consulta creada por auto-guardado, pero no cuenta como guardado manual
+                    # El flag permanece False para permitir guardado manual posterior
                 else:
                     print("Error creando nueva consulta con análisis IA")
                     
@@ -761,9 +783,11 @@ Opciones del consumidor:
                 )
                 success = consulta_id is not None
                 action = "guardado"
-            
+
             if success:
-                messagebox.showinfo("Éxito", f"Borrador {action} correctamente.", 
+                # Marcar como guardada para evitar auto-guardado duplicado
+                self.consultation_saved = True
+                messagebox.showinfo("Éxito", f"Borrador {action} correctamente.",
                                   parent=self.app_controller.root)
                 
                 # Actualizar estado del prospecto si es necesario
